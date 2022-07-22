@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script type="text/javascript">
+    if (window.location.hash && window.location.hash == "#_=_") {
+      if (window.history && history.pushState) {
+        window.history.pushState(
+          "",
+          document.title,
+          window.location.pathname
+        );
+      } else {
+        // Prevent scrolling by storing the page's current scroll offset
+        var scroll = {
+          top: document.body.scrollTop,
+          left: document.body.scrollLeft,
+        };
+        window.location.hash = "";
+        // Restore the scroll offset, should be flicker free
+        document.body.scrollTop = scroll.top;
+        document.body.scrollLeft = scroll.left;
+      }
+    }
+  </script>
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+  <title>The Biryani Brothers ❤</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+  <link rel="manifest" href="img/favicon/site.webmanifest">
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<body>
+  <!-- navbar -->
+  <nav class="py-2.5 md:py-3.5 border-b">
+    <div class="container mx-auto px-4">
+      <div class="relative flex items-center justify-between">
+        <a href="/" class="flex items-center"> <img src="/img/logo.jpg" alt="branding"></a>
+        <div class="flex">
+          <!-- mobile greetings -->
+          <% if(user){ %>
+            <div class="md:hidden greetings">
+              <span>Hello,</span>
+              <span class="font-semibold">
+                <%=user.name.firstname? user.name.firstname: "cheers" %>
+              </span>
+            </div>
+            <% }%>
+              <!-- Mobile cart icon -->
+              <a href="/cart" class="md:hidden flex ml-3  mobile-cart">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    style="fill:rgba(0, 0, 0, 1);">
+                    <path
+                      d="M21.822,7.431C21.635,7.161,21.328,7,21,7H7.333L6.179,4.23C5.867,3.482,5.143,3,4.333,3H2v2h2.333l4.744,11.385 C9.232,16.757,9.596,17,10,17h8c0.417,0,0.79-0.259,0.937-0.648l3-8C22.052,8.044,22.009,7.7,21.822,7.431z M17.307,15h-6.64 l-2.5-6h11.39L17.307,15z">
+                    </path>
+                    <circle cx="10.5" cy="19.5" r="1.5"></circle>
+                    <circle cx="17.5" cy="19.5" r="1.5"></circle>
+                  </svg>
+                </span>
+
+                <span class="text-white cartCounter">
+                  <%=session.cart ? session.cart.totalQty : 0 %>
+                </span></a>
+
+
+              <!-- Mobile menu button-->
+
+              <button class="inline-flex items-center justify-center ml-3 text-gray-400 hover:text-gray-800 md:hidden"
+                aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+
+                <span id="close-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#000">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </span>
+                <span id="toggle-open">
+                  <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="#000" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </span>
+              </button>
+        </div>
+        <div class="hidden md:block">
+          <ul class="flex items-center">
+            <li class="ml-8">
+              <a href="/#menu" class="hover:text-primary transition duration-300 ease-in-out">Menu</a>
+            </li>
+
+            <% if(user){ %>
+              <li class="ml-8">
+                <div class="relative inline-block text-left">
+                  <div>
+                    <button type="button"
+                      class="inline-flex item-center justify-center w-full rounded-md font-medium text-gray-700 hover:text-primary transition duration-300 ease-in-out"
+                      id="options-menu" aria-expanded="true" aria-haspopup="true">
+                      My Account
+                      <!-- Heroicon name: solid/chevron-down -->
+                      <svg class="ml-1 mt-0.5 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        fill="currentColor" aria-hidden="true" id="options-menu">
+                        <path fill-rule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+
+
+                  <div
+                    class="origin-top-right dropdown-menu rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+                    role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <div role="none" class="py-1">
+                      <a href="<%=user.role=== "admin" ? '/admin/profile' : '/customer/profile' %>"
+                        class="p-3 flex items-center  text-gray-700 hover:underline hover:text-primary border-b border-gray-100"
+                        role="menuitem"><span class="mr-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor" class="h-5 w-5 text-primary">
+                            <path fill-rule="evenodd"
+                              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                              clip-rule="evenodd" />
+                          </svg></span> Profile</a>
+                      <a href="<%=user.role=== "admin" ? '/admin/orders' : '/customer/orders' %>"
+                        class="p-3 text-gray-700 hover:underline flex items-center hover:text-primary border-b
+                        border-gray-100"
+                        role="menuitem"
+                        ><span class="mr-4"><img src="/img/sent.svg" alt="" class="h-4 w-4"></span> Orders</a>
+                      <a href="/Logout" class="p-3 text-gray-700 hover:underline flex items-center hover:text-primary"
+                        role="menuitem"><span class="mr-4"><img src="/img/power.svg" class="h-4 w-4" alt=""></span>
+                        Logout</a>
+
+                    </div>
+                  </div>
+                </div>
+
+
+              </li>
+              <% } else {%>
+                <li class="ml-8">
+                  <a href="/register" class="hover:text-primary transition duration-300 ease-in-out">Register</a>
+                </li>
+                <li class="ml-8">
+                  <a href="/login" class="hover:text-primary transition duration-300 ease-in-out">Login</a>
+                </li>
+                <% } %>
+                  <li class="ml-8">
+                    <a href="/cart"
+                      class="px-4 bg-primary py-2.5 rounded-full transition duration-300 ease-in-out hover:bg-primaryHover flex item-center text-white shadow"><img
+                        src="/img/shopping-cart.svg" style="width: 25px" alt="cart-icon" />
+                      <span class="ml-2 mr-1 cartCounter">
+                        <%=session.cart ? session.cart.totalQty : 0 %>
+                      </span>
+
+                      <span>items</span>
+                    </a>
+                  </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-2 pb-3 space-y-0.5 nav-menu border-b">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+
+      <% if(user){ %>
+        <a href="/customer/profile/" class="text-gray-800 block px-4 py-2  hover:text-primary  font-medium">Profile</a>
+
+        <a href="<%=user.role=== " admin" ? '/admin/orders' : '/customer/orders' %>"
+          class="text-gray-800 hover:text-primary block px-4 py-2 text-base font-medium"
+          >Orders</a>
+        <a href="javascript:void(0)"
+          class="text-gray-800 hover:text-primary  block px-4 py-2  text-base font-medium">Offers</a>
+        <a href="/cart" class="text-gray-800 hover:text-primary  block px-4 py-2  text-base font-medium">Cart</a>
+        <% } else{%>
+          <a href="/#menu" class="text-gray-800 hover:text-primary  block px-4 py-2  text-base font-medium">Menu</a>
+
+          <a href="/login" class="text-gray-800 hover:text-primary  block px-4 py-2  text-base font-medium">Login</a>
+          <a href="/register"
+            class="text-gray-800 hover:text-primary  block px-4 py-2  text-base font-medium">Register</a>
+          <a href="/cart" class="text-gray-800 hover:text-primary  block px-4 py-2  text-base font-medium">Cart</a>
+
+
+
+          <% } %>
+
+
+            <% if(user){ %>
+              <a href="/Logout"
+                class="text-gray-800  hover:text-primary block px-4 py-2 text-base font-medium">Logout</a>
+              <% } %>
+    </div>
+
+  </nav>
+  <!-- navbar end -->
+  <%- body %>
+    <footer class="bg-gray-200 text-center lg:text-left">
+      <div class="text-gray-700 text-center p-4" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright All Rights Reserved | Made by Ramen Manna & Soumik Kundu
+      </div>
+    </footer>
+    <!-- scripts -->
+    <script type="module" src="/js/alpine.min.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
